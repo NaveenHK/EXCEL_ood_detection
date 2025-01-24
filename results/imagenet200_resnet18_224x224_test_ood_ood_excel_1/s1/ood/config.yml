@@ -1,0 +1,394 @@
+!!python/object/new:openood.utils.config.Config
+state:
+  dataset:
+    name: imagenet200
+    num_classes: 200
+    pre_size: 256
+    image_size: 224
+    interpolation: bilinear
+    normalization_type: imagenet
+    num_workers: 8
+    num_gpus: 1
+    num_machines: 1
+    split_names: &id001
+    - train
+    - val
+    - test
+    train:
+      dataset_class: ImglistDataset
+      data_dir: ./data/images_largescale/
+      imglist_pth: ./data/benchmark_imglist/imagenet200/train_imagenet200.txt
+      batch_size: 256
+      shuffle: true
+    val:
+      dataset_class: ImglistDataset
+      data_dir: ./data/images_largescale/
+      imglist_pth: ./data/benchmark_imglist/imagenet200/val_imagenet200.txt
+      batch_size: 256
+      shuffle: false
+    test:
+      dataset_class: ImglistDataset
+      data_dir: ./data/images_largescale/
+      imglist_pth: ./data/benchmark_imglist/imagenet200/test_imagenet200.txt
+      batch_size: 256
+      shuffle: false
+  ood_dataset:
+    name: imagenet200_ood
+    num_classes: 200
+    dataset_class: ImglistDataset
+    interpolation: bilinear
+    batch_size: 256
+    shuffle: false
+    pre_size: 256
+    image_size: 224
+    num_workers: 8
+    num_gpus: 1
+    num_machines: 1
+    split_names: &id002
+    - val
+    - nearood
+    - farood
+    val:
+      data_dir: ./data/images_largescale/
+      imglist_pth: ./data/benchmark_imglist/imagenet200/val_openimage_o.txt
+    nearood:
+      datasets: &id003
+      - ssb_hard
+      - ninco
+      ssb_hard:
+        data_dir: ./data/images_largescale/
+        imglist_pth: ./data/benchmark_imglist/imagenet/test_ssb_hard.txt
+      ninco:
+        data_dir: ./data/images_largescale/
+        imglist_pth: ./data/benchmark_imglist/imagenet/test_ninco.txt
+    farood:
+      datasets: &id004
+      - inaturalist
+      - textures
+      - openimageo
+      textures:
+        data_dir: ./data/images_classic/
+        imglist_pth: ./data/benchmark_imglist/imagenet/test_textures.txt
+      inaturalist:
+        data_dir: ./data/images_largescale/
+        imglist_pth: ./data/benchmark_imglist/imagenet/test_inaturalist.txt
+      openimageo:
+        data_dir: ./data/images_largescale/
+        imglist_pth: ./data/benchmark_imglist/imagenet/test_openimage_o.txt
+  network:
+    name: resnet18_224x224
+    num_classes: 200
+    pretrained: true
+    checkpoint: results/imagenet200_resnet18_224x224_base_e90_lr0.1_default/s0/best.ckpt
+    num_gpus: 1
+  exp_name: imagenet200_resnet18_224x224_test_ood_ood_excel_1/s0/ood
+  output_dir: ./results/imagenet200_resnet18_224x224_test_ood_ood_excel_1/s0/ood
+  save_output: true
+  merge_option: default
+  mark: '1'
+  seed: 0
+  num_gpus: 1
+  num_workers: 8
+  num_machines: 1
+  machine_rank: 0
+  pipeline:
+    name: test_ood
+  evaluator:
+    name: ood
+    ood_scheme: ood
+  recorder:
+    save_scores: true
+    save_csv: true
+  preprocessor:
+    name: base
+  postprocessor:
+    name: excel
+    APS_mode: true
+    postprocessor_args:
+      a: null
+      upper: null
+      reward: null
+    postprocessor_sweep:
+      a: &id005
+      - 0.8
+      upper: &id006
+      - 5
+      reward: &id007
+      - 10
+dictitems:
+  dataset: !!python/object/new:openood.utils.config.Config
+    state:
+      name: imagenet200
+      num_classes: 200
+      pre_size: 256
+      image_size: 224
+      interpolation: bilinear
+      normalization_type: imagenet
+      num_workers: 8
+      num_gpus: 1
+      num_machines: 1
+      split_names: *id001
+      train:
+        dataset_class: ImglistDataset
+        data_dir: ./data/images_largescale/
+        imglist_pth: ./data/benchmark_imglist/imagenet200/train_imagenet200.txt
+        batch_size: 256
+        shuffle: true
+      val:
+        dataset_class: ImglistDataset
+        data_dir: ./data/images_largescale/
+        imglist_pth: ./data/benchmark_imglist/imagenet200/val_imagenet200.txt
+        batch_size: 256
+        shuffle: false
+      test:
+        dataset_class: ImglistDataset
+        data_dir: ./data/images_largescale/
+        imglist_pth: ./data/benchmark_imglist/imagenet200/test_imagenet200.txt
+        batch_size: 256
+        shuffle: false
+    dictitems:
+      name: imagenet200
+      num_classes: 200
+      pre_size: 256
+      image_size: 224
+      interpolation: bilinear
+      normalization_type: imagenet
+      num_workers: 8
+      num_gpus: 1
+      num_machines: 1
+      split_names: *id001
+      train: !!python/object/new:openood.utils.config.Config
+        state:
+          dataset_class: ImglistDataset
+          data_dir: ./data/images_largescale/
+          imglist_pth: ./data/benchmark_imglist/imagenet200/train_imagenet200.txt
+          batch_size: 256
+          shuffle: true
+        dictitems:
+          dataset_class: ImglistDataset
+          data_dir: ./data/images_largescale/
+          imglist_pth: ./data/benchmark_imglist/imagenet200/train_imagenet200.txt
+          batch_size: 256
+          shuffle: true
+      val: !!python/object/new:openood.utils.config.Config
+        state:
+          dataset_class: ImglistDataset
+          data_dir: ./data/images_largescale/
+          imglist_pth: ./data/benchmark_imglist/imagenet200/val_imagenet200.txt
+          batch_size: 256
+          shuffle: false
+        dictitems:
+          dataset_class: ImglistDataset
+          data_dir: ./data/images_largescale/
+          imglist_pth: ./data/benchmark_imglist/imagenet200/val_imagenet200.txt
+          batch_size: 256
+          shuffle: false
+      test: !!python/object/new:openood.utils.config.Config
+        state:
+          dataset_class: ImglistDataset
+          data_dir: ./data/images_largescale/
+          imglist_pth: ./data/benchmark_imglist/imagenet200/test_imagenet200.txt
+          batch_size: 256
+          shuffle: false
+        dictitems:
+          dataset_class: ImglistDataset
+          data_dir: ./data/images_largescale/
+          imglist_pth: ./data/benchmark_imglist/imagenet200/test_imagenet200.txt
+          batch_size: 256
+          shuffle: false
+  ood_dataset: !!python/object/new:openood.utils.config.Config
+    state:
+      name: imagenet200_ood
+      num_classes: 200
+      dataset_class: ImglistDataset
+      interpolation: bilinear
+      batch_size: 256
+      shuffle: false
+      pre_size: 256
+      image_size: 224
+      num_workers: 8
+      num_gpus: 1
+      num_machines: 1
+      split_names: *id002
+      val:
+        data_dir: ./data/images_largescale/
+        imglist_pth: ./data/benchmark_imglist/imagenet200/val_openimage_o.txt
+      nearood:
+        datasets: *id003
+        ssb_hard:
+          data_dir: ./data/images_largescale/
+          imglist_pth: ./data/benchmark_imglist/imagenet/test_ssb_hard.txt
+        ninco:
+          data_dir: ./data/images_largescale/
+          imglist_pth: ./data/benchmark_imglist/imagenet/test_ninco.txt
+      farood:
+        datasets: *id004
+        textures:
+          data_dir: ./data/images_classic/
+          imglist_pth: ./data/benchmark_imglist/imagenet/test_textures.txt
+        inaturalist:
+          data_dir: ./data/images_largescale/
+          imglist_pth: ./data/benchmark_imglist/imagenet/test_inaturalist.txt
+        openimageo:
+          data_dir: ./data/images_largescale/
+          imglist_pth: ./data/benchmark_imglist/imagenet/test_openimage_o.txt
+    dictitems:
+      name: imagenet200_ood
+      num_classes: 200
+      dataset_class: ImglistDataset
+      interpolation: bilinear
+      batch_size: 256
+      shuffle: false
+      pre_size: 256
+      image_size: 224
+      num_workers: 8
+      num_gpus: 1
+      num_machines: 1
+      split_names: *id002
+      val: !!python/object/new:openood.utils.config.Config
+        state:
+          data_dir: ./data/images_largescale/
+          imglist_pth: ./data/benchmark_imglist/imagenet200/val_openimage_o.txt
+        dictitems:
+          data_dir: ./data/images_largescale/
+          imglist_pth: ./data/benchmark_imglist/imagenet200/val_openimage_o.txt
+      nearood: !!python/object/new:openood.utils.config.Config
+        state:
+          datasets: *id003
+          ssb_hard:
+            data_dir: ./data/images_largescale/
+            imglist_pth: ./data/benchmark_imglist/imagenet/test_ssb_hard.txt
+          ninco:
+            data_dir: ./data/images_largescale/
+            imglist_pth: ./data/benchmark_imglist/imagenet/test_ninco.txt
+        dictitems:
+          datasets: *id003
+          ssb_hard: !!python/object/new:openood.utils.config.Config
+            state:
+              data_dir: ./data/images_largescale/
+              imglist_pth: ./data/benchmark_imglist/imagenet/test_ssb_hard.txt
+            dictitems:
+              data_dir: ./data/images_largescale/
+              imglist_pth: ./data/benchmark_imglist/imagenet/test_ssb_hard.txt
+          ninco: !!python/object/new:openood.utils.config.Config
+            state:
+              data_dir: ./data/images_largescale/
+              imglist_pth: ./data/benchmark_imglist/imagenet/test_ninco.txt
+            dictitems:
+              data_dir: ./data/images_largescale/
+              imglist_pth: ./data/benchmark_imglist/imagenet/test_ninco.txt
+      farood: !!python/object/new:openood.utils.config.Config
+        state:
+          datasets: *id004
+          textures:
+            data_dir: ./data/images_classic/
+            imglist_pth: ./data/benchmark_imglist/imagenet/test_textures.txt
+          inaturalist:
+            data_dir: ./data/images_largescale/
+            imglist_pth: ./data/benchmark_imglist/imagenet/test_inaturalist.txt
+          openimageo:
+            data_dir: ./data/images_largescale/
+            imglist_pth: ./data/benchmark_imglist/imagenet/test_openimage_o.txt
+        dictitems:
+          datasets: *id004
+          textures: !!python/object/new:openood.utils.config.Config
+            state:
+              data_dir: ./data/images_classic/
+              imglist_pth: ./data/benchmark_imglist/imagenet/test_textures.txt
+            dictitems:
+              data_dir: ./data/images_classic/
+              imglist_pth: ./data/benchmark_imglist/imagenet/test_textures.txt
+          inaturalist: !!python/object/new:openood.utils.config.Config
+            state:
+              data_dir: ./data/images_largescale/
+              imglist_pth: ./data/benchmark_imglist/imagenet/test_inaturalist.txt
+            dictitems:
+              data_dir: ./data/images_largescale/
+              imglist_pth: ./data/benchmark_imglist/imagenet/test_inaturalist.txt
+          openimageo: !!python/object/new:openood.utils.config.Config
+            state:
+              data_dir: ./data/images_largescale/
+              imglist_pth: ./data/benchmark_imglist/imagenet/test_openimage_o.txt
+            dictitems:
+              data_dir: ./data/images_largescale/
+              imglist_pth: ./data/benchmark_imglist/imagenet/test_openimage_o.txt
+  network: !!python/object/new:openood.utils.config.Config
+    state:
+      name: resnet18_224x224
+      num_classes: 200
+      pretrained: true
+      checkpoint: results/imagenet200_resnet18_224x224_base_e90_lr0.1_default/s0/best.ckpt
+      num_gpus: 1
+    dictitems:
+      name: resnet18_224x224
+      num_classes: 200
+      pretrained: true
+      checkpoint: results/imagenet200_resnet18_224x224_base_e90_lr0.1_default/s0/best.ckpt
+      num_gpus: 1
+  exp_name: imagenet200_resnet18_224x224_test_ood_ood_excel_1/s0/ood
+  output_dir: ./results/imagenet200_resnet18_224x224_test_ood_ood_excel_1/s0/ood
+  save_output: true
+  merge_option: default
+  mark: '1'
+  seed: 0
+  num_gpus: 1
+  num_workers: 8
+  num_machines: 1
+  machine_rank: 0
+  pipeline: !!python/object/new:openood.utils.config.Config
+    state:
+      name: test_ood
+    dictitems:
+      name: test_ood
+  evaluator: !!python/object/new:openood.utils.config.Config
+    state:
+      name: ood
+      ood_scheme: ood
+    dictitems:
+      name: ood
+      ood_scheme: ood
+  recorder: !!python/object/new:openood.utils.config.Config
+    state:
+      save_scores: true
+      save_csv: true
+    dictitems:
+      save_scores: true
+      save_csv: true
+  preprocessor: !!python/object/new:openood.utils.config.Config
+    state:
+      name: base
+    dictitems:
+      name: base
+  postprocessor: !!python/object/new:openood.utils.config.Config
+    state:
+      name: excel
+      APS_mode: true
+      postprocessor_args:
+        a: null
+        upper: null
+        reward: null
+      postprocessor_sweep:
+        a: *id005
+        upper: *id006
+        reward: *id007
+    dictitems:
+      name: excel
+      APS_mode: true
+      postprocessor_args: !!python/object/new:openood.utils.config.Config
+        state:
+          a: null
+          upper: null
+          reward: null
+        dictitems:
+          a: null
+          upper: null
+          reward: null
+      postprocessor_sweep: !!python/object/new:openood.utils.config.Config
+        state:
+          a: *id005
+          upper: *id006
+          reward: *id007
+        dictitems:
+          a: *id005
+          upper: *id006
+          reward: *id007
