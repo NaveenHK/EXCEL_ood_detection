@@ -21,7 +21,7 @@ class ExcelPostprocessor(BasePostprocessor):
         self.reward = self.args.reward
         self.args_dict = self.config.postprocessor.postprocessor_sweep
         self.postprocessorname = "excel"
-        self.topk = 200  # No.of classes
+        self.topk = 100  # No.of classes of the dataset (100 - CIFAR100) 
 
     @torch.no_grad()
     def inference(self,
